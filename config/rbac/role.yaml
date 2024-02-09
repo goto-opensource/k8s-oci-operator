@@ -1,0 +1,39 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  name: manager-role
+rules:
+- apiGroups:
+  - oci.k8s.logmein.com
+  resources:
+  - reservedipassociations
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - oci.k8s.logmein.com
+  resources:
+  - reservedips
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - oci.k8s.logmein.com
+  resources:
+  - reservedips/status
+  verbs:
+  - get
+  - patch
+  - update

@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-oci-operator
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/name: k8s-oci-operator
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: k8s-oci-operator
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: k8s-oci-operator
+    spec:
+      serviceAccountName: k8s-oci-operator
+      containers:
+      - image: logmein/k8s-oci-operator
+        name: k8s-oci-operator
+        resources:
+          requests:
+            cpu: 20m
+            memory: 50Mi
+          limits:
+            memory: 100Mi
+        args:
+        - -region=us-east-1
+        - -leader-election-namespace=kube-system
+        ports:
+        - name: metrics
+          containerPort: 8080
+          protocol: TCP

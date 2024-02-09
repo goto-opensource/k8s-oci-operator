@@ -1,0 +1,8 @@
+apiVersion: oci.k8s.logmein.com/v1alpha1
+kind: ReservedIP
+metadata:
+  name: alfred-test
+  namespace: kube-system
+spec:
+  tags:
+    bla: blub

@@ -1,0 +1,13 @@
+version: "3"
+layout:
+- go.kubebuilder.io/v3
+domain: logmein.com
+repo: github.com/logmein/k8s-oci-operator
+resource:
+- api:
+    namespaced: true
+    crdVersion: v1alpha1
+  domain: logmein.com
+  group: k8s
+  kind: ReservedIP
+  controller: true

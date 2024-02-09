@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: k8s-oci-operator
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/name: k8s-oci-operator
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: k8s-oci-operator
+  labels:
+    app.kubernetes.io/name: k8s-oci-operator
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get"]
+- apiGroups: ["oci.k8s.logmein.com"]
+  resources: ["eips", "enis"]
+  verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: k8s-oci-operator
+  labels:
+    app.kubernetes.io/name: k8s-oci-operator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: k8s-oci-operator
+subjects:
+- kind: ServiceAccount
+  name: k8s-oci-operator
+  namespace: kube-system
+
+# for leader election:
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: k8s-oci-operator
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/name: k8s-oci-operator
+rules:
+- apiGroups: [""]
+  resources: ["configmaps"]
+  verbs: ["create"]
+- apiGroups: [""]
+  resources: ["configmaps"]
+  resourceNames: ["k8s-oci-operator"]
+  verbs: ["delete","get","update"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: k8s-oci-operator
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/name: k8s-oci-operator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: k8s-oci-operator
+subjects:
+  - kind: ServiceAccount
+    name: k8s-oci-operator
+    namespace: kube-system
